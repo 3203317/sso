@@ -5,7 +5,8 @@
  */
 'use strict';
 
-var site = require('../controllers/site');
+var site = require('../controllers/site'),
+	user = require('../controllers/user');
 
 var virtualPath = '',
 	title = 'SSO',
@@ -14,8 +15,9 @@ var virtualPath = '',
 module.exports = function(app){
 	app.get('/', site.indexUI);
 
-	app.post('/login$', valiPostData, site.login);
-	app.get('/login$', site.loginUI);
+	app.get('/user/auth$', user.validate, user.authUI);
+	app.post('/user/login$', valiPostData, user.login);
+	app.get('/user/login$', user.loginUI);
 };
 
 /**

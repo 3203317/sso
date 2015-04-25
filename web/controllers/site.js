@@ -25,17 +25,3 @@ exports.indexUI = function(req, res, next){
 		cdn: conf.cdn
 	});
 };
-
-exports.loginUI = function(req, res, next){
-	res.render('Login', {
-		title: title,
-		description: '',
-		keywords: ',sso,css,javascript,html',
-		virtualPath: virtualPath,
-		cdn: conf.cdn
-	});
-};
-
-exports.login = function(req, res, next){
-	// TODO
-};
