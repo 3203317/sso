@@ -18,7 +18,9 @@ var routes = require('./routes'),
 	velocity = require('velocityjs');
 
 /* session config */
-var flash = require('connect-flash');
+var settings = require('./settings'),
+	MongoStore = require('connect-mongo')(express),
+	flash = require('connect-flash');
 
 var app = express();
 
@@ -37,6 +39,16 @@ app.set('port', process.env.PORT || 3000)
 	.use(express.urlencoded())
 	.use(express.methodOverride())
 	.use(express.cookieParser())
+	.use(express.session({
+		secret: settings.cookieSecret,
+		key: settings.db,
+		cookie: {
+			maxAge: 1000 * 60 * 60 * 24 * 30 //30 days
+		}, store: new MongoStore({
+			// db: settings.db
+			url: 'mongodb://'+ settings.user +':'+ settings.pass +'@'+ settings.host +':'+ settings.port +'/'+ settings.db
+		})
+	}))
 	.use('/public', express.static(path.join(__dirname, 'public')))
 	.use(app.router)
 	/* velocity */
@@ -44,7 +56,7 @@ app.set('port', process.env.PORT || 3000)
 		fs.readFile(path, 'utf8', function (err, data){
 			if(err) return fn(err);
 			try{ fn(null, velocity.render(data, options, macros)); }
-			catch(e){ console.log(e); fn(e); }
+			catch(e){ fn(e); }
 		});
 	});
 

@@ -13,6 +13,9 @@ var virtualPath = '',
 
 module.exports = function(app){
 	app.get('/', site.indexUI);
+
+	app.post('/login$', valiPostData, site.login);
+	app.get('/login$', site.loginUI);
 };
 
 /**
