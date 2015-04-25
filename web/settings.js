@@ -12,5 +12,5 @@ module.exports = {
 	port: 22017,
 	user: 'sa',
 	pass: 'sa',
-	cdn: 'http://www.foreworld.net/js/'
+	cdn: '/public/assets/js/'
 };

@@ -6,7 +6,7 @@
 'use strict';
 
 var express = require('express'),
-	http = require('http'),
+	http = require('https'),
 	path = require('path');
 
 var cwd = process.cwd(),
@@ -65,7 +65,11 @@ if('development' === app.get('env')){
 	app.use(express.errorHandler());
 }
 
-http.createServer(app).listen(app.get('port'), function(){
+http.createServer({
+	key: fs.readFileSync('./ssl/privatekey.pem').toString(),
+	cert: fs.readFileSync('./ssl/certificate.pem').toString(),
+	ca: fs.readFileSync('./ssl/certrequest.csr').toString()
+}, app).listen(app.get('port'), function(){
 	console.log('Express server listening on port %s.', app.get('port'));
 	routes(app);
 });
