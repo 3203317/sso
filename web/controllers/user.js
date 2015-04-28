@@ -27,6 +27,18 @@ exports.authUI = function(req, res, next){
 };
 
 exports.loginUI = function(req, res, next){
+	var domain = req.query.domain;
+	if(!domain || !domain.trim().length){
+		return res.render('ErrPage', {
+			title: title,
+			description: '',
+			keywords: ',sso,css,javascript,html',
+			virtualPath: virtualPath,
+			msg: 'domain',
+			cdn: conf.cdn
+		});
+	}
+
 	res.render('user/Login', {
 		title: title,
 		description: '',
@@ -49,5 +61,34 @@ exports.validate = function(req, res, next){
 			msg: '无权访问'
 		});
 	}
-	res.redirect('/user/login');
+
+	var domain = req.query.domain;
+	if(!domain || !domain.trim().length){
+		return res.render('ErrPage', {
+			title: title,
+			description: '',
+			keywords: ',sso,css,javascript,html',
+			virtualPath: virtualPath,
+			msg: 'domain',
+			cdn: conf.cdn
+		});
+	}
+
+	var redirect = req.query.redirect;
+	if(!redirect || !redirect.trim().length){
+		return res.render('ErrPage', {
+			title: title,
+			description: '',
+			keywords: ',sso,css,javascript,html',
+			virtualPath: virtualPath,
+			msg: 'redirect',
+			cdn: conf.cdn
+		});
+	}
+
+	var params = {
+		domain: domain,
+		redirect: redirect
+	};
+	res.redirect('/u/login?'+ qs.stringify(params));
 };
