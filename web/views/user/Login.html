@@ -10,11 +10,11 @@
 				<form>
 					<div>
 						UserName:
-						<input type='text'>
+						<input type='text' id='username'>
 					</div>
 					<div>
 						Password:
-						<input type='password'>
+						<input type='password' id='password'>
 					</div>
 					<div>
 						<button id='btn_log' type='button'>Login</button>
@@ -33,9 +33,11 @@
 				type: 'POST',
 				dataType: 'json',
 				data: {
+					redirect: '$!{params.redirect}',
 					data: JSON.stringify({
 						domain: '$!{params.domain}',
-						redirect: '$!{params.redirect}'
+						username: $('#username').val(),
+						password: $('#password').val()
 					})
 				}
 			}).done(function (data){
