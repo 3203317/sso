@@ -2,12 +2,18 @@
 <html lang='zh-CN'>
 	<head>
 		#parse('pagelet/IndexHeader.html')
+		<style>
+		#error {
+			color: red;
+		}
+		</style>
 	</head>
 	<body>
 		<header id='header'></header>
 		<section class='container'>
 			<div class='row'>
 				<form>
+					<div><span id='error'></span></div>
 					<div>
 						UserName:
 						<input type='text' id='username'>
@@ -41,7 +47,10 @@
 					})
 				}
 			}).done(function (data){
-				// TODO
+				if(!data.success){
+					$('#error').html(data.msg[0]);
+					$('#'+ data.msg[1]).focus();
+				}
 			});
 		});
 		</script>
