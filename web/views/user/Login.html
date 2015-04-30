@@ -13,12 +13,12 @@
 		<section class='container'>
 			<div class='row'>
 				<form method='get' action='/u/auth' onsubmit='return frmVali();'>
-					<div id='error'>$!{error}</div>
+					<div><span id='error'>$!{error}</span></div>
 					<div>
-						<input type='hidden' name='domain' value='$!{params.domain}'>
+						<input type='hidden' id='domain' name='domain' value='$!{params.domain}'>
 					</div>
 					<div>
-						<input type='hidden' name='redirect' value='$!{params.redirect}'>
+						<input type='hidden' id='redirect' name='redirect' value='$!{params.redirect}'>
 					</div>
 					<div>
 						UserName:
@@ -39,7 +39,7 @@
 		#parse('pagelet/LastJs.html')
 		<script type='text/javascript'>
 		function frmVali(){
-			return false;
+			return !0;
 		}
 		</script>
 	</body>

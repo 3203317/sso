@@ -20,15 +20,12 @@ var User = require('../biz/user');
 
 exports.loginUI = function(req, res, next){
 	var domain = req.query.domain;
+	var redirect = req.query.redirect;
+
 	if(!domain || !domain.trim().length){
-		return res.render('ErrPage', {
-			title: title,
-			description: '',
-			keywords: ',sso,css,javascript,html',
-			virtualPath: virtualPath,
-			error: 'I need domain.',
-			cdn: conf.cdn
-		});
+		req.flash('error', 'I need domain.');
+	} else if(!redirect || !redirect.trim().length){
+		req.flash('error', 'I need redirect.');
 	}
 
 	res.render('user/Login', {
@@ -38,7 +35,7 @@ exports.loginUI = function(req, res, next){
 		virtualPath: virtualPath,
 		params: {
 			domain: domain,
-			redirect: req.query.redirect
+			redirect: redirect
 		},
 		error: req.flash('error').toString(),
 		cdn: conf.cdn
@@ -47,15 +44,41 @@ exports.loginUI = function(req, res, next){
 
 exports.auth = function(req, res, next){
 	var data = req.query;
+	var domain = data.domain;
+	var redirect = data.redirect;
+	var username = data.username;
+	var password = data.password;
+
 	var params = {
-		domain: data.domain,
-		redirect: data.redirect
+		domain: domain,
+		redirect: redirect
 	};
 
+	if(!domain || !domain.trim().length){
+		req.flash('error', 'I need domain.');
+		return res.redirect('/u/login?'+ qs.stringify(params));
+	}
+
+	if(!redirect || !redirect.trim().length){
+		req.flash('error', 'I need redirect.');
+		return res.redirect('/u/login?'+ qs.stringify(params));
+	}
+
+	if(!username || !username.trim().length){
+		req.flash('error', '用户名不能为空，请输入！');
+		return res.redirect('/u/login?'+ qs.stringify(params));
+	}
+
+	if(!password || !password.trim().length){
+		req.flash('error', '密码不能为空，请输入！');
+		return res.redirect('/u/login?'+ qs.stringify(params));
+	}
+
+	/* query my sql */
 	User.login([
-		data.domain,
-		data.username,
-		data.password
+		domain,
+		username,
+		password
 	], function (err, status, msg, doc){
 		if(err) return next(err);
 		if(!!status){
@@ -67,7 +90,7 @@ exports.auth = function(req, res, next){
 		req.session.domain = doc.TENANT_NAME;
 		req.session.userId = doc.id;
 		req.session.user = doc;
-		/* result */
+		/* success */
 		res.redirect('/auth?'+ qs.stringify(params));
 	});
 };
