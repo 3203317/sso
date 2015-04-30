@@ -16,6 +16,8 @@ var fs = require('fs'),
 var title = 'SSO',
 	virtualPath = '/';
 
+var User = require('../biz/user');
+
 exports.loginUI = function(req, res, next){
 	var domain = req.query.domain;
 	if(!domain || !domain.trim().length){
@@ -43,8 +45,16 @@ exports.loginUI = function(req, res, next){
 };
 
 exports.login = function(req, res, next){
-	var result = { success: false };
-	res.send(result);
+	var result = { success: false },
+		data = req._data;
+
+	User.login(data, function (err, status, msg, doc){
+		if(err) return next(err);
+		if(!!status){
+			result.msg = msg;
+			return res.send(result);
+		}
+	});
 };
 
 exports.validate = function(req, res, next){
