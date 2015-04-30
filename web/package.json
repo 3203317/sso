@@ -8,6 +8,7 @@
   "dependencies": {
     "express": "3.5.0",
     "mysql": "2.5.3",
+    "node-mysql": "0.4.2",
     "mongodb": "1.4.20",
     "mongoose": "3.8.19",
     "velocityjs": "0.4.6",

@@ -40,20 +40,35 @@ exports.loginUI = function(req, res, next){
 			domain: domain,
 			redirect: req.query.redirect
 		},
+		error: req.flash('error').toString(),
 		cdn: conf.cdn
 	});
 };
 
-exports.login = function(req, res, next){
-	var result = { success: false },
-		data = req._data;
+exports.auth = function(req, res, next){
+	var data = req.query;
+	var params = {
+		domain: data.domain,
+		redirect: data.redirect
+	};
 
-	User.login(data, function (err, status, msg, doc){
+	User.login([
+		data.domain,
+		data.username,
+		data.password
+	], function (err, status, msg, doc){
 		if(err) return next(err);
 		if(!!status){
-			result.msg = msg;
-			return res.send(result);
+			req.flash('error', msg[0]);
+			return res.redirect('/u/login?'+ qs.stringify(params));
 		}
+		/* session */
+		req.session.lv = 2;
+		req.session.domain = doc.TENANT_NAME;
+		req.session.userId = doc.id;
+		req.session.user = doc;
+		/* result */
+		res.redirect('/auth?'+ qs.stringify(params));
 	});
 };
 

@@ -12,18 +12,24 @@
 		<header id='header'></header>
 		<section class='container'>
 			<div class='row'>
-				<form>
-					<div><span id='error'></span></div>
+				<form method='get' action='/u/auth' onsubmit='return frmVali();'>
+					<div id='error'>$!{error}</div>
+					<div>
+						<input type='hidden' name='domain' value='$!{params.domain}'>
+					</div>
+					<div>
+						<input type='hidden' name='redirect' value='$!{params.redirect}'>
+					</div>
 					<div>
 						UserName:
-						<input type='text' id='username'>
+						<input required='required' type='text' id='username' name='username'>
 					</div>
 					<div>
 						Password:
-						<input type='password' id='password'>
+						<input required='required' type='password' id='password' name='password'>
 					</div>
 					<div>
-						<button id='btn_log' type='button'>Login</button>
+						<button id='btn_log' type='submit'>Login</button>
 					</div>
 				</form>
 			</div>
@@ -31,28 +37,10 @@
 		#parse('pagelet/IndexJs.html')
 		<!-- Own -->
 		#parse('pagelet/LastJs.html')
-
 		<script type='text/javascript'>
-		$('#btn_log').click(function(){
-			$.ajax({
-				url: $().olxUtilRandomUrl('/u/login'),
-				type: 'POST',
-				dataType: 'json',
-				data: {
-					redirect: '$!{params.redirect}',
-					data: JSON.stringify({
-						domain: '$!{params.domain}',
-						username: $('#username').val(),
-						password: $('#password').val()
-					})
-				}
-			}).done(function (data){
-				if(!data.success){
-					$('#error').html(data.msg[0]);
-					$('#'+ data.msg[1]).focus();
-				}
-			});
-		});
+		function frmVali(){
+			return false;
+		}
 		</script>
 	</body>
 </html>

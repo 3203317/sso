@@ -16,7 +16,7 @@ module.exports = function(app){
 	app.get('/', site.indexUI);
 	app.get('/auth$', site.authUI);
 
-	app.post('/u/login$', valiPostData, user.login);
+	app.get('/u/auth$', user.auth);
 	app.get('/u/login$', user.loginUI);
 };
 
