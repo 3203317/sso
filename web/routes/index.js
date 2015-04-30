@@ -14,8 +14,8 @@ var virtualPath = '',
 
 module.exports = function(app){
 	app.get('/', site.indexUI);
+	app.get('/auth$', site.authUI);
 
-	app.get('/u/auth$', user.validate, user.authUI);
 	app.post('/u/login$', valiPostData, user.login);
 	app.get('/u/login$', user.loginUI);
 };

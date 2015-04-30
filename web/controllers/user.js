@@ -16,16 +16,6 @@ var fs = require('fs'),
 var title = 'SSO',
 	virtualPath = '/';
 
-exports.authUI = function(req, res, next){
-	res.render('user/Auth', {
-		title: title,
-		description: '',
-		keywords: ',sso,css,javascript,html',
-		virtualPath: virtualPath,
-		cdn: conf.cdn
-	});
-};
-
 exports.loginUI = function(req, res, next){
 	var domain = req.query.domain;
 	if(!domain || !domain.trim().length){
@@ -34,7 +24,7 @@ exports.loginUI = function(req, res, next){
 			description: '',
 			keywords: ',sso,css,javascript,html',
 			virtualPath: virtualPath,
-			msg: 'domain',
+			error: 'I need domain.',
 			cdn: conf.cdn
 		});
 	}
@@ -44,12 +34,17 @@ exports.loginUI = function(req, res, next){
 		description: '',
 		keywords: ',sso,css,javascript,html',
 		virtualPath: virtualPath,
+		params: {
+			domain: domain,
+			redirect: req.query.redirect
+		},
 		cdn: conf.cdn
 	});
 };
 
 exports.login = function(req, res, next){
-	// TODO
+	var result = { success: false };
+	res.send(result);
 };
 
 exports.validate = function(req, res, next){
@@ -61,34 +56,4 @@ exports.validate = function(req, res, next){
 			msg: '无权访问'
 		});
 	}
-
-	var domain = req.query.domain;
-	if(!domain || !domain.trim().length){
-		return res.render('ErrPage', {
-			title: title,
-			description: '',
-			keywords: ',sso,css,javascript,html',
-			virtualPath: virtualPath,
-			msg: 'domain',
-			cdn: conf.cdn
-		});
-	}
-
-	var redirect = req.query.redirect;
-	if(!redirect || !redirect.trim().length){
-		return res.render('ErrPage', {
-			title: title,
-			description: '',
-			keywords: ',sso,css,javascript,html',
-			virtualPath: virtualPath,
-			msg: 'redirect',
-			cdn: conf.cdn
-		});
-	}
-
-	var params = {
-		domain: domain,
-		redirect: redirect
-	};
-	res.redirect('/u/login?'+ qs.stringify(params));
 };

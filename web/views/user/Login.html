@@ -17,7 +17,7 @@
 						<input type='password'>
 					</div>
 					<div>
-						<button>Login</button>
+						<button id='btn_log' type='button'>Login</button>
 					</div>
 				</form>
 			</div>
@@ -25,5 +25,23 @@
 		#parse('pagelet/IndexJs.html')
 		<!-- Own -->
 		#parse('pagelet/LastJs.html')
+
+		<script type='text/javascript'>
+		$('#btn_log').click(function(){
+			$.ajax({
+				url: $().olxUtilRandomUrl('/u/login'),
+				type: 'POST',
+				dataType: 'json',
+				data: {
+					data: JSON.stringify({
+						domain: '$!{params.domain}',
+						redirect: '$!{params.redirect}'
+					})
+				}
+			}).done(function (data){
+				// TODO
+			});
+		});
+		</script>
 	</body>
 </html>
