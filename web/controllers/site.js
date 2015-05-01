@@ -28,27 +28,10 @@ exports.indexUI = function(req, res, next){
 
 exports.authUI = function(req, res, next){
 	var domain = req.query.domain;
-	if(!domain || !domain.trim().length){
-		return res.render('ErrPage', {
-			title: title,
-			description: '',
-			keywords: ',sso,css,javascript,html',
-			virtualPath: virtualPath,
-			error: 'I need domain.',
-			cdn: conf.cdn
-		});
-	}
-
 	var redirect = req.query.redirect;
+
 	if(!redirect || !redirect.trim().length){
-		return res.render('ErrPage', {
-			title: title,
-			description: '',
-			keywords: ',sso,css,javascript,html',
-			virtualPath: virtualPath,
-			error: 'I need redirect.',
-			cdn: conf.cdn
-		});
+		req.flash('error', 'I need redirect.');
 	}
 
 	if(2 === req.session.lv){
@@ -57,6 +40,8 @@ exports.authUI = function(req, res, next){
 			description: '',
 			keywords: ',sso,css,javascript,html',
 			virtualPath: virtualPath,
+			error: req.flash('error').toString(),
+			redirect: redirect,
 			cdn: conf.cdn
 		});
 	}

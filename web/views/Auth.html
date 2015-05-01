@@ -2,11 +2,22 @@
 <html lang='zh-CN'>
 	<head>
 		#parse('pagelet/IndexHeader.html')
+		<style>
+		#error {
+			color: red;
+		}
+		</style>
 	</head>
 	<body>
 		<header id='header'></header>
 		<section class='container'>
 			<div class='row'>
+				<div><span id='error'>$!{error}</span></div>
+				<div>
+					#if('' == $!{error})
+						页面跳转至 <a href='$!{redirect}'>$!{redirect}</a>
+					#end
+				</div>
 			</div>
 		</section>
 		#parse('pagelet/IndexJs.html')
