@@ -37,7 +37,7 @@ exports.loginUI = function(req, res, next){
 			domain: domain,
 			redirect: redirect
 		},
-		error: req.flash('error').toString(),
+		error: req.flash('error')[0],
 		cdn: conf.cdn
 	});
 };

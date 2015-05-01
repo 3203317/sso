@@ -43,7 +43,7 @@ app.set('port', process.env.PORT || 3000)
 		secret: settings.cookieSecret,
 		key: settings.db,
 		cookie: {
-			maxAge: 1000 * 60 * 60 * 24 * 30 //30 days
+			maxAge: 1000 * 60 //60 second
 		}, store: new MongoStore({
 			// db: settings.db
 			url: 'mongodb://'+ settings.user +':'+ settings.pass +'@'+ settings.host +':'+ settings.port +'/'+ settings.db
