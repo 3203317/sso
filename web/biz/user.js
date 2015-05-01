@@ -26,13 +26,13 @@ var md5 = require('../lib/md5');
 exports.login = function(logInfo, cb){
 	pool.getConnection(function (err, conn){
 		if(err) throw err;
-		conn.query('SELECT t.* FROM (SELECT b.*, a.TENANT_NAME FROM s_tenant a, s_tenantuser b WHERE a.id=b.TENANT_ID) t WHERE t.TENANT_NAME=? and t.USER_NAME=?',
+		conn.query('SELECT t.* FROM (SELECT b.*, a.TENANT_NAME FROM s_tenant a, s_tenantuser b WHERE a.id=b.TENANT_ID AND b.STATUS=1) t WHERE t.TENANT_NAME=? and t.USER_NAME=?',
 			[logInfo[0], logInfo[1]],
 			function (err, rows, fields){
 			conn.release();
 			if(err) throw err;
 			if(0 === rows.length){
-				return cb(null, 3, ['找不到该用户。', 'username'], null);
+				return cb(null, 3, ['用户名或密码输入错误，请重试！', 'username'], null);
 			}
 			if(md5.hex(logInfo[2]) !== rows[0].PASSWORD){
 				return cb(null, 6, ['用户名或密码输入错误，请重试！', 'password'], rows[0]);

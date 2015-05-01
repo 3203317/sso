@@ -89,7 +89,7 @@ exports.auth = function(req, res, next){
 		req.session.lv = 2;
 		req.session.domain = doc.TENANT_NAME;
 		req.session.userId = doc.id;
-		req.session.user = doc;
+		req.session.username = doc.USER_NAME;
 		/* success */
 		res.redirect('/auth?'+ qs.stringify(params));
 	});
